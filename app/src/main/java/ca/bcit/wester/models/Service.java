@@ -1,4 +1,6 @@
-package ca.bcit.wester;
+package ca.bcit.wester.models;
+
+import ca.bcit.wester.models.Location;
 
 /**
  * a

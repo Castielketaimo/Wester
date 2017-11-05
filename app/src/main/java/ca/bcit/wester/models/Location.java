@@ -1,4 +1,4 @@
-package ca.bcit.wester;
+package ca.bcit.wester.models;
 
 /**
  * Created by Chonjou on 2017-10-17.
