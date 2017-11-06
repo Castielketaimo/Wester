@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Wester</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">Wester</string>
+    <string name="info_filter">Filter Request</string>
+    <string name="info_text">Text Request</string>
+    <string name="info_search">Search</string>
 </resources>
