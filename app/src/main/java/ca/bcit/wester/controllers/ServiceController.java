@@ -54,6 +54,8 @@ public class ServiceController extends DatabaseHandler
         values.put("Phone", service.getPostalCode());
         values.put("Email", service.getPostalCode());
         values.put("Website", service.getPostalCode());
+        values.put("Category", service.getCategory());
+        values.put("Description", service.getDescription());
 
         // Connect to database, insert, and close database.
         SQLiteDatabase db = this.getWritableDatabase();
@@ -184,6 +186,8 @@ public class ServiceController extends DatabaseHandler
         values.put("Phone", service.getPostalCode());
         values.put("Email", service.getPostalCode());
         values.put("Website", service.getPostalCode());
+        values.put("Category", service.getCategory());
+        values.put("Description", service.getDescription());
 
         // Prepare update on specific service id.
         String where = ID_COLUMN_NAME + " = ?";

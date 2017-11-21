@@ -7,4 +7,8 @@
         <item>http://opendata.newwestcity.ca/downloads/community-programming/PARKS_RECREATION_AND_COMMUNITY_SCHOOL_PROGRAMMING.json</item>
         <item>http://opendata.newwestcity.ca/downloads/employment/EMPLOYMENT_AND_JOB_TRAINING.json</item>
     </string-array>
+    <string name="title_activity_main">Wester</string>
+    <string name="info_filter">Filter Request</string>
+    <string name="info_text">Text Request</string>
+    <string name="info_search">Search</string>
 </resources>
