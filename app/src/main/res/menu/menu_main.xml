@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/info_filter"
+        android:title="@string/info_filter"
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:orderInCategory="1"
+        app:showAsAction="always">
+        <menu>
+            <item android:id="@+id/item1" android:title="Placeholder"></item>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/info_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:orderInCategory="2"
+        app:showAsAction="always" />
+
+
+    <item android:id="@+id/action_request_info"
+        android:title="@string/info_text"
+        android:icon="@drawable/ic_menu_white_24dp"
+        android:orderInCategory="3"
+        app:showAsAction="always" />
+</menu>
