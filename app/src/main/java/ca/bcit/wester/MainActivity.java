@@ -72,103 +72,103 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private class JsonHandler extends AsyncTask<Void, Void, Void>
-//    {
-//
-//        @Override
-//        protected Void doInBackground(Void... arg0)
-//        {
-//            String[] urls = getResources().getStringArray(R.array.urls);
-//            HttpHandler http = new HttpHandler();
-//            for(int index = 0; index < urls.length; index++)
-//            {
-//                String jsonStr = http.makeServiceCall(urls[index]);
-//                //Log.e(TAG, "Response from url: " + jsonStr);
-//
-//                if (jsonStr == null)
-//                {
-//                    Log.e(TAG, "Couldn't get json from server.");
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Couldn't get json from server. Check LogCat for possible errors!",
-//                                    Toast.LENGTH_LONG)
-//                                    .show();
-//                        }
-//                    });
-//
-//                    return null;
-//                }
-//
-//                try
-//                {
-//                    JSONArray serviceJsonArray = new JSONArray(jsonStr);
-//                    for (int i = 0; i < serviceJsonArray.length(); i++)
-//                    {
-//                        JSONObject serviceJson = serviceJsonArray.getJSONObject(i);
-//                        String name = serviceJson.getString("Name");
-//                        String description = serviceJson.getString("Description");
-//                        String category = serviceJson.getString("Category");
-//                        String hours = serviceJson.getString("Hours");
-//                        String location = serviceJson.getString("Location");
-//                        String postal = serviceJson.getString("PC");
-//                        String phone = serviceJson.getString("Phone");
-//                        String email = serviceJson.getString("Email");
-//                        String website = serviceJson.getString("Website");
-//                        double x = Double.parseDouble(serviceJson.getString("X"));
-//                        double y = Double.parseDouble(serviceJson.getString("Y"));
-//                        ArrayList<String> tags = new ArrayList<>();
-//                        Service service = new Service(0, name, x, y, tags, description, category, hours, location, postal, phone, email, website);
-//                        dbHandler.create(service);
-//                    }
-//                }
-//                catch (final JSONException e)
-//                {
-//                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Json parsing error: " + e.getMessage(),
-//                                    Toast.LENGTH_LONG)
-//                                    .show();
-//                        }
-//                    });
-//                }
-//            }
-//            ArrayList<Service> testArray = (ArrayList) dbHandler.read();
-//            for(Service test : testArray)
-//            {
-//                filterNames.add(test.getDescription());
-//            }
-//
-//            filterName.addAll(filterNames);
-//            filterNames.clear();
-//            filterNames.addAll(filterName);
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPreExecute()
-//        {
-//            super.onPreExecute();
-//            progressDialog = new ProgressDialog(MainActivity.this);
-//            progressDialog.setMessage("Please Wait...");
-//            progressDialog.setCancelable(false);
-//            progressDialog.show();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void aVoid)
-//        {
-//            super.onPostExecute(aVoid);
-//            if (progressDialog.isShowing()) {
-//                progressDialog.dismiss();
-//            }
-//            for(int i = 0; i < filterNames.size(); i++) {
-//                filterList.getSubMenu().add(0, i, i, filterNames.get(i));
-//            }
-//        }
-//    }
+    private class JsonHandler extends AsyncTask<Void, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... arg0)
+        {
+            String[] urls = getResources().getStringArray(R.array.urls);
+            HttpHandler http = new HttpHandler();
+            for(int index = 0; index < urls.length; index++)
+            {
+                String jsonStr = http.makeServiceCall(urls[index]);
+                //Log.e(TAG, "Response from url: " + jsonStr);
+
+                if (jsonStr == null)
+                {
+                    Log.e(TAG, "Couldn't get json from server.");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    "Couldn't get json from server. Check LogCat for possible errors!",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+
+                    return null;
+                }
+
+                try
+                {
+                    JSONArray serviceJsonArray = new JSONArray(jsonStr);
+                    for (int i = 0; i < serviceJsonArray.length(); i++)
+                    {
+                        JSONObject serviceJson = serviceJsonArray.getJSONObject(i);
+                        String name = serviceJson.getString("Name");
+                        String description = serviceJson.getString("Description");
+                        String category = serviceJson.getString("Category");
+                        String hours = serviceJson.getString("Hours");
+                        String location = serviceJson.getString("Location");
+                        String postal = serviceJson.getString("PC");
+                        String phone = serviceJson.getString("Phone");
+                        String email = serviceJson.getString("Email");
+                        String website = serviceJson.getString("Website");
+                        double x = Double.parseDouble(serviceJson.getString("X"));
+                        double y = Double.parseDouble(serviceJson.getString("Y"));
+                        ArrayList<String> tags = new ArrayList<>();
+                        Service service = new Service(0, name, x, y, tags, description, category, hours, location, postal, phone, email, website);
+                        dbHandler.create(service);
+                    }
+                }
+                catch (final JSONException e)
+                {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    "Json parsing error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+                }
+            }
+            ArrayList<Service> testArray = (ArrayList) dbHandler.read();
+            for(Service test : testArray)
+            {
+                filterNames.add(test.getDescription());
+            }
+
+            filterName.addAll(filterNames);
+            filterNames.clear();
+            filterNames.addAll(filterName);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Please Wait...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid)
+        {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            for(int i = 0; i < filterNames.size(); i++) {
+                filterList.getSubMenu().add(0, i, i, filterNames.get(i));
+            }
+        }
+    }
 }
