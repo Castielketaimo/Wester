@@ -16,7 +16,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper
 {
 
-    /** Potluck database name. */
+    /** Wester database name. */
     private static final String DB_NAME = "WesterDB";
 
     /** Database version number. */
