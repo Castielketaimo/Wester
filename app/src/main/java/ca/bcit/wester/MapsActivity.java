@@ -3,13 +3,11 @@ package ca.bcit.wester;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.os.AsyncTask;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,7 +46,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_maps);
         //Add actionbar to activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,26 +91,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void addMarker(LatLng location, String Cate, String name){
+    private void addMarker(LatLng location, String Cate, String name) {
         mMap.addMarker(new MarkerOptions()
                 .title(name)
                 .snippet(Cate)
                 .position(location));
-    }
-
-
-    public void onClickDone(View v) {
-        CharSequence text = "Button was clicked.";
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator), text, Snackbar.LENGTH_LONG);
-        snackbar.setAction("H" +
-                "ide", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast t = Toast.makeText(MapsActivity.this, "Done", Toast.LENGTH_LONG);
-                t.show();
-            }
-        });
-        snackbar.show();
     }
 
 
