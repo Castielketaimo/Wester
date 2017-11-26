@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -33,6 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static java.lang.Character.isDigit;
+import static java.lang.Math.abs;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ServiceController serviceC;
@@ -41,8 +45,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ProgressDialog progressDialog;
     private ServiceController dbHandler;
     private MenuItem filterList = null;
-    private static ArrayList<String> filterNames = new ArrayList<String>();
-    private static Set<String> filterName= new TreeSet<String>();
+    private static ArrayList<String> filterNameList = new ArrayList<String>();
+    private static Set<String> sortedNames = new TreeSet<String>();
 
 
     @Override
@@ -85,11 +89,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void pinAllServices() {
         serviceC = new ServiceController(this);
         List<Service> services = serviceC.read();
+        mMap.clear();
         for(Service s : services){
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Cate = s.getCategory();
+            String Desc = s.getDescription();
             String name = s.getName();
-            addMarker(servicePin, Cate, name);
+            addMarker(servicePin, Desc, name);
+        }
+    }
+
+//    filter pins
+    private void pinFilterServices(String category) {
+        serviceC = new ServiceController(this);
+        List<Service> services = serviceC.readRecordsByCategory(category);
+        mMap.clear();
+        for(Service s : services){
+            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
+            String Desc = s.getDescription();
+            String name = s.getName();
+            addMarker(servicePin, Desc, name);
         }
     }
 
@@ -132,14 +150,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+//      if the id was a 0 or negative number, then the item selected has come from the filter list.
+        if (item.getItemId() < 0) {
+            pinFilterServices(filterNameList.get(abs(item.getItemId())));
+            return super.onOptionsItemSelected(item);
+        } else if (item.getItemId() == 0) {
+            pinAllServices();
+            return super.onOptionsItemSelected(item);
+        } else {
         // Take appropriate action for each action item click
-        switch (item.getItemId()) {
-            case R.id.info_filter:
-                // search action
-                System.out.println("Filter");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            switch (item.getItemId()) {
+                case R.id.info_filter:
+                    // search action
+                    System.out.println("Filter");
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
         }
     }
 
@@ -184,7 +212,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         double x = Double.parseDouble(serviceJson.getString("X"));
                         double y = Double.parseDouble(serviceJson.getString("Y"));
                         ArrayList<String> tags = new ArrayList<>();
-                        Service service = new Service(0, name, x, y, tags, description, category, hours, location, postal, phone, email, website);
+                        Service service = new Service(0, name, x, y, tags, category, description, hours, location, postal, phone, email, website);
                         dbHandler.create(service);
                     }
                 } catch (final JSONException e) {
@@ -202,12 +230,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             ArrayList<Service> testArray = (ArrayList) dbHandler.read();
             for (Service test : testArray) {
-                filterNames.add(test.getDescription());
+                filterNameList.add(test.getCategory());
             }
 
-            filterName.addAll(filterNames);
-            filterNames.clear();
-            filterNames.addAll(filterName);
+            sortedNames.addAll(filterNameList);
+            filterNameList.clear();
+            filterNameList.addAll(sortedNames);
             return null;
         }
 
@@ -227,8 +255,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 progressDialog.dismiss();
             }
             //Add Menu Items
-            for (int i = 0; i < filterNames.size(); i++) {
-                filterList.getSubMenu().add(0, i, i, filterNames.get(i));
+            filterList.getSubMenu().add(0, 0, 0, "All");
+            for (int i = 1; i < filterNameList.size(); i++) {
+                //give unique id of each item the inverse to prevent conflicts with other items when implementing onclick
+                filterList.getSubMenu().add(0, (i*-1), i, filterNameList.get(i - 1));
             }
         }
     }

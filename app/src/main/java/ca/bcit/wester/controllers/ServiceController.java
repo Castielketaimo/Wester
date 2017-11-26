@@ -166,6 +166,56 @@ public class ServiceController extends DatabaseHandler
         return service;
     }
 
+    public List<Service> readRecordsByCategory(String category)
+    {
+        // New list of service.
+        List<Service> recordsList = new ArrayList<Service>();
+
+        // SQL statement to grab all services ordered by descending.
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE Category LIKE '" + category + "'";
+
+        // Create new db instance, and cursor instance.
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // Go through and add all services to the service list.
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                // Get Service details
+                int _serviceID = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ID_COLUMN_NAME)));
+                String Name = cursor.getString(cursor.getColumnIndex("Name"));
+                double Longitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Longitude")));
+                double Latitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Latitude")));
+                ArrayList<String> Tags = convertStringToArrayList(cursor.getString((cursor.getColumnIndex("Tags"))));
+                String Category = cursor.getString(cursor.getColumnIndex("Category"));
+                String Description = cursor.getString(cursor.getColumnIndex("Description"));
+                String Hours = cursor.getString(cursor.getColumnIndex("Hours"));
+                String Address = cursor.getString(cursor.getColumnIndex("Address"));
+                String Postal = cursor.getString(cursor.getColumnIndex("Postal"));
+                String Phone = cursor.getString(cursor.getColumnIndex("Phone"));
+                String Email = cursor.getString(cursor.getColumnIndex("Email"));
+                String Website = cursor.getString(cursor.getColumnIndex("Website"));
+
+                // Create new service instance, with serviceID.
+                Service service = new Service(_serviceID, Name, Longitude, Latitude, Tags, Category, Description, Hours, Address, Postal, Phone, Email, Website);
+
+                // Add record to list.
+                recordsList.add(service);
+            }
+            while (cursor.moveToNext());
+        }
+
+        // Close cursor and database.
+        cursor.close();
+        db.close();
+
+        // Return list of services.
+        return recordsList;
+    }
+
+
     /**
      * Update Service.
      *
