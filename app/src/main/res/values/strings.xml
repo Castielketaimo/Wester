@@ -11,4 +11,6 @@
     <string name="info_filter">Filter Request</string>
     <string name="info_text">Text Request</string>
     <string name="info_search">Search</string>
+    <string name="app_label">Search</string>
+    <string name="search_hint">Search...</string>
 </resources>

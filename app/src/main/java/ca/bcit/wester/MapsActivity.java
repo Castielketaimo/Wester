@@ -111,6 +111,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    //    filter pins
+    private void pinSearchedServices(String desc) {
+        serviceC = new ServiceController(this);
+        List<Service> services = serviceC.readRecordsByDescription(desc);
+        mMap.clear();
+        for(Service s : services){
+            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
+            String Desc = s.getDescription();
+            String name = s.getName();
+            addMarker(servicePin, Desc, name);
+        }
+    }
+
     private void addMarker(LatLng location, String Cate, String name){
         mMap.addMarker(new MarkerOptions()
                 .title(name)
@@ -135,16 +148,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu. This adds items to the app bar.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         filterList = menu.findItem(R.id.info_filter);
         filterList.getSubMenu().clear();
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setFocusable(false);
         ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(Color.WHITE);
         ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setHintTextColor(Color.WHITE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Clear entry on submit
+                Toast.makeText(MapsActivity.this, "Searching for " + query, Toast.LENGTH_LONG).show();
+                pinSearchedServices(query);
+                searchView.setIconified(true);
+                searchView.clearFocus();
+
+                // collapse the action view after submit
+                searchView.setIconified(true);
+                (menu.findItem(R.id.action_search)).collapseActionView();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -162,8 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Take appropriate action for each action item click
             switch (item.getItemId()) {
                 case R.id.info_filter:
-                    // search action
-                    System.out.println("Filter");
+                    // search by filter
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
