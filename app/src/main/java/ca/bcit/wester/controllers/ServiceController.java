@@ -133,7 +133,7 @@ public class ServiceController extends DatabaseHandler
 
         // Grab service from DB with specific service id.
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE _serviceID = " + serviceID;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
 
         // If service exists.

@@ -3,11 +3,14 @@ package ca.bcit.wester;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.os.AsyncTask;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import java.util.TreeSet;
 import ca.bcit.wester.controllers.ServiceController;
 import ca.bcit.wester.models.Service;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -74,12 +79,70 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
+        // Add a marker in new west and move the camera
         LatLng newWest = new LatLng(49.206654, -122.910429);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 15));
+
+        //pin all the services needed
         pinAllServices();
+
+        //set up the listeners for markers
+        setUpListener();
     }
 
+    /**
+     * Set up the listener for markers
+     */
+    private void setUpListener(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                //inflate the bottom sheet with information needed
+                influteBottomSheet(Integer.parseInt(marker.getTag().toString()));
+                return false;
+            }
+        });
+    }
+
+    private void influteBottomSheet(int serviceId){
+        //read the Service by tag
+        ServiceController s = new ServiceController(this);
+        Service service = s.readSingleRecordById(serviceId);
+
+        //get the xml file
+        View inflatedView = getLayoutInflater().inflate(R.layout.fragment_map_bottomsheet, null);
+
+        //get all the views
+        TextView name = (TextView) inflatedView.findViewById(R.id.name);
+        TextView cater = (TextView) inflatedView.findViewById(R.id.cater);
+        TextView desc = (TextView) inflatedView.findViewById(R.id.desc);
+        TextView hours = (TextView) inflatedView.findViewById(R.id.hours);
+        TextView address = (TextView) inflatedView.findViewById(R.id.address);
+        TextView phone = (TextView) inflatedView.findViewById(R.id.phone);
+        TextView email = (TextView) inflatedView.findViewById(R.id.email);
+        TextView website = (TextView) inflatedView.findViewById(R.id.website);
+
+        //Set all the text view with the service information
+        System.out.print(name.getHint());
+        name.setText(service.getName());
+        cater.setText(service.getCategory());
+        desc.setText(service.getDescription());
+        hours.setText(service.getHours());
+        address.setText(service.getAddress());
+        phone.setText(service.getPhone());
+        email.setText(service.getEmail());
+        website.setText(service.getWebsite());
+
+        BottomSheetDialogFragment b = new BottomSheetMapFragment();
+        //display the bottom sheet
+
+        b.show(getSupportFragmentManager(), b.getTag());
+    }
+    /**
+     * Pin all the services onto the google map
+     * with title and cater as snippets
+     */
     private void pinAllServices() {
         serviceC = new ServiceController(this);
         List<Service> services = serviceC.read();
@@ -87,17 +150,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
             String Cate = s.getCategory();
             String name = s.getName();
-            addMarker(servicePin, Cate, name);
+            int tag = s.getID();
+            addMarker(servicePin, Cate, name, tag);
         }
     }
 
-    private void addMarker(LatLng location, String Cate, String name) {
-        mMap.addMarker(new MarkerOptions()
+    /**
+     * makes marker to put onto the map
+     * @param location
+     * @param cate
+     * @param name
+     */
+    private void addMarker(LatLng location, String cate, String name, int tag) {
+        Marker marker = mMap.addMarker(new MarkerOptions()
                 .title(name)
-                .snippet(Cate)
+                .snippet(cate)
                 .position(location));
+        //give each marker a unique tag
+        marker.setTag(tag);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
