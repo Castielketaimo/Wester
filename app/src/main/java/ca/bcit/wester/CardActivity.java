@@ -25,7 +25,7 @@ public class CardActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        //mAdapter = new MyAdapter(myDataset);
+        mAdapter = new CardAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 }
