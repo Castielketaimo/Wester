@@ -228,40 +228,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         switch(cate) {
             case "Drop-In Centre" :
-                return R.drawable.ic_group_add_black_24dp;
+                return R.drawable.ic_dropin_marker;
 
             case "Education, Language and Literacy" :
-                return R.drawable.ic_school_black_24dp;
+                return R.drawable.ic_education_marker;
 
-            case "Emergency,Transitional and Supported Housing" :
-                return R.drawable.ic_warning_black_24dp;
+            case "Emergency, Transitional and Supported Housing" :
+                return R.drawable.ic_emergency_marker;
 
             case "Employment and Job Training" :
-                return R.drawable.ic_work_black_24dp;
+                return R.drawable.ic_job_marker;
 
             case "Family and General Support Programs" :
-                return R.drawable.ic_accessibility_black_24dp;
+                return R.drawable.ic_family_marker;
 
             case "Food Programs and Services" :
-                return R.drawable.ic_restaurant_black_24dp;
+                return R.drawable.ic_food_marker;
 
             case "Government and Justice Services" :
-                return R.drawable.ic_account_balance_black_24dp;
+                return R.drawable.ic_judge_marker;
 
             case "Health, Mental Health & Addictions Services" :
-                return R.drawable.ic_local_hospital_black_24dp;
+                return R.drawable.ic_health_marker;
 
             case "Housing Outreach, Advocacy and Referral" :
-                return R.drawable.ic_domain_black_24dp;
+                return R.drawable.ic_outreach_marker;
 
             case "Non-Market and Co-op Housing" :
-                return R.drawable.ic_home_black_24dp;
+                return R.drawable.ic_house_marker;
 
-            case "Parks, Recreation and Community School" :
-                return R.drawable.ic_local_florist_black_24dp;
+            case "Parks, Recreation and Community School Programming":
+                return R.drawable.ic_park_marker;
 
             case "Seniors Services" :
-                return R.drawable.ic_accessible_black_24dp;
+                return R.drawable.ic_elder_marker;
+
+            case "Child Care, Child Development and Early Learning Programs":
+                return R.drawable.ic_child_marker;
 
             default :
                 return R.drawable.ic_done_white_24dp;
