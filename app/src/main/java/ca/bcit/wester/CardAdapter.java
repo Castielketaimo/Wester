@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,30 +75,91 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertAdd = new AlertDialog.Builder(new ContextThemeWrapper((v.getContext()), R.style.CustomAlertDialog));
-//                LayoutInflater inflater = (LayoutInflater)v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                ImageView image = new ImageView(v.getContext());
-                makeImage(services.get(servicePosition).getCategory(), image);
+//                AlertDialog alertDialog = alertAdd.create();
+                //  LayoutInflater inflater = (LayoutInflater)v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+//                alertDialog.setContentView(R.layout.dialog_laylout);
+                alertAdd.setTitle("");
+                LayoutInflater factory = LayoutInflater.from(v.getContext());
+                final View contentView = factory.inflate(R.layout.dialog_laylout, null);
+//                TextView category = (TextView) alertDialog.findViewById(R.id.dialog_category);
+//                category.setText(services.get(servicePosition).getCategory());
+//
+//                ImageView image = (ImageView) alertDialog.findViewById(R.id.dialog_image);
+//                makeImage(services.get(servicePosition).getCategory(), image);
+//
+//
+//
+//                TextView description = (TextView) alertDialog.findViewById(R.id.dialog_description);
+//                String descriptionText = "Hours: " + services.get(servicePosition).getHours() + "\n" +
+//                        "Address: " + services.get(servicePosition).getAddress() + "\n" +
+//                        "Postal Code: " + services.get(servicePosition).getPostalCode() + "\n" +
+//                        "Phone: " + services.get(servicePosition).getPhone() + "\n" +
+//                        "Email: " + services.get(servicePosition).getEmail() + "\n" +
+//                        "Website: " + services.get(servicePosition).getWebsite() + "\n";
+//                description.setText(descriptionText);
 
 
-                alertAdd.setView(image);
-                AlertDialog alertDialog = alertAdd.create();
-                alertDialog.setTitle(services.get(servicePosition).getName());
-                alertDialog.setMessage(
-                        services.get(servicePosition).getDescription() + "\n\n" +
-                        "Hours: " + services.get(servicePosition).getHours() + "\n" +
-                        "Address: " + services.get(servicePosition).getAddress() + "\n" +
-                        "Postal Code: " + services.get(servicePosition).getPostalCode() + "\n" +
-                        "Phone: " + services.get(servicePosition).getPhone() + "\n" +
-                        "Email: " + services.get(servicePosition).getEmail() + "\n" +
-                        "Website: " + services.get(servicePosition).getWebsite() + "\n"
-                );
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
+
+                //get all the views
+                TextView nameView = (TextView) contentView.findViewById(R.id.name);
+                TextView caterView = (TextView) contentView.findViewById(R.id.cater);
+                TextView descView = (TextView) contentView.findViewById(R.id.desc);
+                TextView hoursView = (TextView) contentView.findViewById(R.id.hours);
+                TextView addressView = (TextView) contentView.findViewById(R.id.address);
+                TextView postCodeView = (TextView) contentView.findViewById(R.id.postocode);
+                TextView phoneView = (TextView) contentView.findViewById(R.id.phone);
+                TextView emailView = (TextView) contentView.findViewById(R.id.email);
+                TextView websiteView = (TextView) contentView.findViewById(R.id.website);
+                ImageView caterImg = (ImageView) contentView.findViewById(R.id.CaterImage);
+
+                //set up the string for display
+                String name = services.get(servicePosition).getName();
+                String category = services.get(servicePosition).getCategory();
+                String description =  services.get(servicePosition).getDescription();
+                String hours = "Hours: " + services.get(servicePosition).getHours();
+                String address = "Address: " + services.get(servicePosition).getAddress();
+                String postCode = "PostCode: " + services.get(servicePosition).getPostalCode();
+                String phone = "Phone: " + services.get(servicePosition).getPhone();
+                String email = "Email: " + services.get(servicePosition).getEmail();
+                String website = "Website: " + services.get(servicePosition).getWebsite();
+                makeImage(services.get(servicePosition).getCategory(), caterImg);
+
+                //Set all the text view with the service information
+                nameView.setText(name);
+                caterView.setText(category);
+                descView.setText(description);
+                hoursView.setText(hours);
+                addressView.setText(address);
+                postCodeView.setText(postCode);
+                phoneView.setText(phone);
+                emailView.setText(email);
+                websiteView.setText(website);
+
+                alertAdd.setView(contentView);
+
+                //                alertAdd.setView(image);
+//                alertDialog.setMessage(
+//                        services.get(servicePosition).getDescription() + "\n\n" +
+//                        "Hours: " + services.get(servicePosition).getHours() + "\n" +
+//                        "Address: " + services.get(servicePosition).getAddress() + "\n" +
+//                        "Postal Code: " + services.get(servicePosition).getPostalCode() + "\n" +
+//                        "Phone: " + services.get(servicePosition).getPhone() + "\n" +
+//                        "Email: " + services.get(servicePosition).getEmail() + "\n" +
+//                        "Website: " + services.get(servicePosition).getWebsite() + "\n"
+//                );
+//                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+                alertAdd.setNeutralButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dlg, int sumthin) {
+
+                    }
+                });
+                alertAdd.show();
             }
         });
     }
