@@ -157,6 +157,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 caterImg.setImageResource(R.drawable.seniorsservics);
                 break;
 
+            case "Child Care, Child Development and Early Learning Programs" :
+                caterImg.setImageResource(R.drawable.childcare);
+                break;
+
             case "Settlement Service" :
                 caterImg.setImageResource(R.drawable.settement);
                 break;
