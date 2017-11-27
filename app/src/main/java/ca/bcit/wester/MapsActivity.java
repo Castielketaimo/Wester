@@ -153,7 +153,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     private void pinAllServices() {
         dbHandler = new ServiceController(this);
-        List<Service> services = dbHandler.read();
+        List<Service> services = dbHandler.readAllIntoView();
         pinServices(services);
     }
 

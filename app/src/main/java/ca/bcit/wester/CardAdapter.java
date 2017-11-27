@@ -77,6 +77,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 //                LayoutInflater inflater = (LayoutInflater)v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 ImageView image = new ImageView(v.getContext());
                 makeImage(services.get(servicePosition).getCategory(), image);
+
+
                 alertAdd.setView(image);
                 AlertDialog alertDialog = alertAdd.create();
                 alertDialog.setTitle(services.get(servicePosition).getName());
