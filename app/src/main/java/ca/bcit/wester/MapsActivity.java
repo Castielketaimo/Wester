@@ -1,10 +1,15 @@
 package ca.bcit.wester;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +23,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -135,34 +142,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void pinAllServices() {
         serviceC = new ServiceController(this);
         List<Service> services = serviceC.read();
-        mMap.clear();
-        for(Service s : services){
-            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Cate = s.getCategory();
-            String name = s.getName();
-            int tag = s.getID();
-            addMarker(servicePin, Cate, name, tag);
-        }
+        pinServices(services);
     }
 
-//    filter pins
+    /**
+     * filter the services based on cate
+     * pin the services onto map
+     * @param category
+     */
     private void pinFilterServices(String category) {
         serviceC = new ServiceController(this);
         List<Service> services = serviceC.readRecordsByCategory(category);
-        mMap.clear();
-        for(Service s : services){
-            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Cate = s.getCategory();
-            String name = s.getName();
-            int tag = s.getID();
-            addMarker(servicePin, Cate, name, tag);
-        }
+        pinServices(services);
     }
 
-    //    filter pins
+
+    /**
+     * search the user input in our data base for match result
+     * search based on desc, title, and cate
+     * pin the services onto map
+     * @param desc
+     */
     private void pinSearchedServices(String desc) {
         serviceC = new ServiceController(this);
         List<Service> services = serviceC.readRecordsByDescription(desc);
+        pinServices(services);
+    }
+
+    /**
+     * pin the service passed in as param onto the map fragment
+     * @param services
+     */
+    private void pinServices(List<Service> services){
         mMap.clear();
         for(Service s : services){
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
@@ -180,12 +191,81 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param name
      */
     private void addMarker(LatLng location, String cate, String name, int tag) {
+
         Marker marker = mMap.addMarker(new MarkerOptions()
                 .title(name)
                 .snippet(cate)
-                .position(location));
+                .position(location)
+                );
         //give each marker a unique tag
         marker.setTag(tag);
+        //give marker a different icon based on cate
+        int drawableLocations = findCateIcon(cate);
+        marker.setIcon(bitmapDescriptorFromVector(this, drawableLocations));
+    }
+
+
+    /**
+     * Make the drawable icon into bitmap so we can use for the markers
+     * @param context
+     * @param vectorResId
+     * @return
+     */
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+    /**
+     * returns the int of drawable file based on the cate
+     * @param cate
+     * @return
+     */
+    private int findCateIcon(String cate){
+
+        switch(cate) {
+            case "Drop-In Centre" :
+                return R.drawable.ic_group_add_black_24dp;
+
+            case "Education, Language and Literacy" :
+                return R.drawable.ic_school_black_24dp;
+
+            case "Emergency,Transitional and Supported Housing" :
+                return R.drawable.ic_warning_black_24dp;
+
+            case "Employment and Job Training" :
+                return R.drawable.ic_work_black_24dp;
+
+            case "Family and General Support Programs" :
+                return R.drawable.ic_accessibility_black_24dp;
+
+            case "Food Programs and Services" :
+                return R.drawable.ic_restaurant_black_24dp;
+
+            case "Government and Justice Services" :
+                return R.drawable.ic_account_balance_black_24dp;
+
+            case "Health, Mental Health & Addictions Services" :
+                return R.drawable.ic_local_hospital_black_24dp;
+
+            case "Housing Outreach, Advocacy and Referral" :
+                return R.drawable.ic_domain_black_24dp;
+
+            case "Non-Market and Co-op Housing" :
+                return R.drawable.ic_home_black_24dp;
+
+            case "Parks, Recreation and Community School" :
+                return R.drawable.ic_local_florist_black_24dp;
+
+            case "Seniors Services" :
+                return R.drawable.ic_accessible_black_24dp;
+
+            default :
+                return R.drawable.ic_done_white_24dp;
+        }
     }
 
     @Override

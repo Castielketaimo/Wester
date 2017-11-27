@@ -116,7 +116,6 @@ public class BottomSheetMapFragment extends BottomSheetDialogFragment {
                 caterImg.setImageResource(R.drawable.seniorsservics);
                 break;
 
-
             default :
                 caterImg.setImageResource(R.drawable.newwestminster);
         }
