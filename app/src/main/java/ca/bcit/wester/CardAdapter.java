@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,7 +75,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertAdd = new AlertDialog.Builder(new ContextThemeWrapper((v.getContext()), R.style.CustomAlertDialog));
+                final AlertDialog.Builder alertAdd = new AlertDialog.Builder(new ContextThemeWrapper((v.getContext()), R.style.CustomAlertDialog));
 //                AlertDialog alertDialog = alertAdd.create();
                 //  LayoutInflater inflater = (LayoutInflater)v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -82,24 +83,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 alertAdd.setTitle("");
                 LayoutInflater factory = LayoutInflater.from(v.getContext());
                 final View contentView = factory.inflate(R.layout.dialog_laylout, null);
-//                TextView category = (TextView) alertDialog.findViewById(R.id.dialog_category);
-//                category.setText(services.get(servicePosition).getCategory());
-//
-//                ImageView image = (ImageView) alertDialog.findViewById(R.id.dialog_image);
-//                makeImage(services.get(servicePosition).getCategory(), image);
-//
-//
-//
-//                TextView description = (TextView) alertDialog.findViewById(R.id.dialog_description);
-//                String descriptionText = "Hours: " + services.get(servicePosition).getHours() + "\n" +
-//                        "Address: " + services.get(servicePosition).getAddress() + "\n" +
-//                        "Postal Code: " + services.get(servicePosition).getPostalCode() + "\n" +
-//                        "Phone: " + services.get(servicePosition).getPhone() + "\n" +
-//                        "Email: " + services.get(servicePosition).getEmail() + "\n" +
-//                        "Website: " + services.get(servicePosition).getWebsite() + "\n";
-//                description.setText(descriptionText);
-
-
 
                 //get all the views
                 TextView nameView = (TextView) contentView.findViewById(R.id.name);
@@ -112,6 +95,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 TextView emailView = (TextView) contentView.findViewById(R.id.email);
                 TextView websiteView = (TextView) contentView.findViewById(R.id.website);
                 ImageView caterImg = (ImageView) contentView.findViewById(R.id.CaterImage);
+                Button returnBtn = (Button) contentView.findViewById(R.id.dialog_return);
 
                 //set up the string for display
                 String name = services.get(servicePosition).getName();
@@ -137,29 +121,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 websiteView.setText(website);
 
                 alertAdd.setView(contentView);
-
-                //                alertAdd.setView(image);
-//                alertDialog.setMessage(
-//                        services.get(servicePosition).getDescription() + "\n\n" +
-//                        "Hours: " + services.get(servicePosition).getHours() + "\n" +
-//                        "Address: " + services.get(servicePosition).getAddress() + "\n" +
-//                        "Postal Code: " + services.get(servicePosition).getPostalCode() + "\n" +
-//                        "Phone: " + services.get(servicePosition).getPhone() + "\n" +
-//                        "Email: " + services.get(servicePosition).getEmail() + "\n" +
-//                        "Website: " + services.get(servicePosition).getWebsite() + "\n"
-//                );
-//                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-                alertAdd.setNeutralButton("ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dlg, int sumthin) {
-
+                final AlertDialog dialog = alertAdd.create();
+                returnBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
                     }
                 });
-                alertAdd.show();
+                dialog.show();
             }
         });
     }
