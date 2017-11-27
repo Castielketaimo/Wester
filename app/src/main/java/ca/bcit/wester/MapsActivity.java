@@ -152,7 +152,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * with title and cater as snippets
      */
     private void pinAllServices() {
-            addMarker(servicePin, Cate, name, tag);
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.read();
         pinServices(services);
@@ -336,7 +335,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     return super.onOptionsItemSelected(item);
             }
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void createInputDialog(){
