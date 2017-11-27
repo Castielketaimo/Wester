@@ -46,7 +46,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ServiceController dbHandler;
     private MenuItem filterList = null;
     private static ArrayList<String> filterNameList = new ArrayList<String>();
-    private static Set<String> sortedNames = new TreeSet<String>();
 
 
     @Override
@@ -85,6 +84,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Add a marker in Sydney and move the camera
         LatLng newWest = new LatLng(49.206654, -122.910429);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 15));
+        mMap.clear();
         pinAllServices();
     }
 
@@ -180,6 +180,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+        populateFilter();
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -262,14 +263,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     });
                 }
             }
-            ArrayList<Service> testArray = (ArrayList) dbHandler.read();
-            for (Service test : testArray) {
-                filterNameList.add(test.getCategory());
-            }
 
-            sortedNames.addAll(filterNameList);
-            filterNameList.clear();
-            filterNameList.addAll(sortedNames);
             return null;
         }
 
@@ -288,13 +282,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            //Add Menu Items
-            filterList.getSubMenu().add(0, 0, 0, "All");
-            for (int i = 1; i < filterNameList.size(); i++) {
-                //give unique id of each item the inverse to prevent conflicts with other items when implementing onclick
-                filterList.getSubMenu().add(0, (i*-1), i, filterNameList.get(i - 1));
-            }
+            mMap.clear();
+            pinAllServices();
+            populateFilter();
             Toast.makeText(MapsActivity.this, "The size of the db is " + dbHandler.read().size(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Populates FilterList
+    public void populateFilter() {
+        Set<String> sortedNames = new TreeSet<String>();
+        ServiceController controller = new ServiceController(this);
+        ArrayList<Service> testArray = (ArrayList) controller.read();
+        for (Service test : testArray) {
+            filterNameList.add(test.getCategory());
+        }
+        filterList.getSubMenu().clear();
+        sortedNames.addAll(filterNameList);
+        filterNameList.clear();
+        filterNameList.addAll(sortedNames);
+
+        //Add Menu Items
+        filterList.getSubMenu().add(0, 0, 0, "All");
+        for (int i = 1; i < filterNameList.size(); i++) {
+            //give unique id of each item the inverse to prevent conflicts with other items when implementing onclick
+            filterList.getSubMenu().add(0, (i*-1), i, filterNameList.get(i - 1));
         }
     }
 }

@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        dropTables(db); // For development only.
+        //dropTables(db); // For development only.
         initDatabase(db);
     }
 
