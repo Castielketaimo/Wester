@@ -26,4 +26,5 @@
     <string name="category">Category</string>
     <string name="name">Name</string>
     <string name="action_return">Return</string>
+    <string name="dialog_return">Back</string>
 </resources>
