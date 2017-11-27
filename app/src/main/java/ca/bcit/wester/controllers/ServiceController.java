@@ -53,7 +53,7 @@ public class ServiceController extends DatabaseHandler
         values.put("Postal", service.getPostalCode());
         values.put("Phone", service.getPhone());
         values.put("Email", service.getEmail());
-        values.put("Website", service.getPostalCode());
+        values.put("Website", service.getWebsite());
         values.put("Category", service.getCategory());
         values.put("Description", service.getDescription());
 

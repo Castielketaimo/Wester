@@ -152,10 +152,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.clear();
         for(Service s : services){
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Desc = s.getDescription();
+            String Cate = s.getCategory();
             String name = s.getName();
             int tag = s.getID();
-            addMarker(servicePin, Desc, name, tag);
+            addMarker(servicePin, Cate, name, tag);
         }
     }
 
@@ -166,10 +166,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.clear();
         for(Service s : services){
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Desc = s.getDescription();
+            String Cate = s.getCategory();
             String name = s.getName();
             int tag = s.getID();
-            addMarker(servicePin, Desc, name, tag);
+            addMarker(servicePin, Cate, name, tag);
         }
     }
 
