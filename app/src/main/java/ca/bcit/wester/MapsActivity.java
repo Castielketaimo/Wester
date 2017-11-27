@@ -105,38 +105,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+    /**
+     * Send the service Id to bottomSheetMapFragment class so BottomSheetMapFragment can Inflate the view as needed
+     * @param serviceId
+     */
     private void influteBottomSheet(int serviceId){
-        //read the Service by tag
-        ServiceController s = new ServiceController(this);
-        Service service = s.readSingleRecordById(serviceId);
-
-        //get the xml file
-        View inflatedView = getLayoutInflater().inflate(R.layout.fragment_map_bottomsheet, null);
-
-        //get all the views
-        TextView name = (TextView) inflatedView.findViewById(R.id.name);
-        TextView cater = (TextView) inflatedView.findViewById(R.id.cater);
-        TextView desc = (TextView) inflatedView.findViewById(R.id.desc);
-        TextView hours = (TextView) inflatedView.findViewById(R.id.hours);
-        TextView address = (TextView) inflatedView.findViewById(R.id.address);
-        TextView phone = (TextView) inflatedView.findViewById(R.id.phone);
-        TextView email = (TextView) inflatedView.findViewById(R.id.email);
-        TextView website = (TextView) inflatedView.findViewById(R.id.website);
-
-        //Set all the text view with the service information
-        System.out.print(name.getHint());
-        name.setText(service.getName());
-        cater.setText(service.getCategory());
-        desc.setText(service.getDescription());
-        hours.setText(service.getHours());
-        address.setText(service.getAddress());
-        phone.setText(service.getPhone());
-        email.setText(service.getEmail());
-        website.setText(service.getWebsite());
-
+        //create ne bottom sheet fragment
         BottomSheetDialogFragment b = new BottomSheetMapFragment();
-        //display the bottom sheet
 
+        //sent the service to new fragment
+        Bundle args = new Bundle();
+        args.putInt("serviceId" , serviceId);
+        b.setArguments(args);
+
+        //display the bottom sheet
         b.show(getSupportFragmentManager(), b.getTag());
     }
     /**
