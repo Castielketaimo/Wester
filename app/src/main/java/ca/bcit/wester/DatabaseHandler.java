@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        //dropTables(db); // For development only.
+        dropTables(db); // For development only.
         initDatabase(db);
     }
 
@@ -95,6 +95,24 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
         // Create the tables/execute the SQL.
         db.execSQL(service_table_sql);
+    }
+
+    /**
+     * Checks if the service table is empty
+     * @return true if it is
+     */
+    public boolean checkTableIsEmpty() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String count = "SELECT count(*) FROM Service";
+        Cursor c = db.rawQuery(count, null);
+        c.moveToFirst();
+        int icount = c.getInt(0);
+        c.close();
+        if(icount>0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

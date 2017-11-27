@@ -65,7 +65,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //populate list
         dbHandler = new ServiceController(this);
-        new MapsActivity.JsonHandler().execute();
+        if(dbHandler.checkTableIsEmpty()) {
+            new MapsActivity.JsonHandler().execute();
+        }
     }
 
     /**
@@ -292,6 +294,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //give unique id of each item the inverse to prevent conflicts with other items when implementing onclick
                 filterList.getSubMenu().add(0, (i*-1), i, filterNameList.get(i - 1));
             }
+            Toast.makeText(MapsActivity.this, "The size of the db is " + dbHandler.read().size(), Toast.LENGTH_SHORT).show();
         }
     }
 }
