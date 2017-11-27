@@ -1,7 +1,9 @@
 package ca.bcit.wester;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -50,13 +52,13 @@ import static java.lang.Math.abs;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private ServiceController serviceC;
     private GoogleMap mMap;
     private String TAG = MapsActivity.class.getSimpleName();
     private ProgressDialog progressDialog;
     private ServiceController dbHandler;
     private MenuItem filterList = null;
     private ArrayList<String> filterNameList = new ArrayList<String>();
+    private Service tempService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,16 +109,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * Set up the listener for markers
      */
     private void setUpListener(){
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//
+//                //inflate the bottom sheet with information needed
+//                influteBottomSheet(Integer.parseInt(marker.getTag().toString()));
+//                return false;
+//            }
+//        });
 
-                //inflate the bottom sheet with information needed
-                influteBottomSheet(Integer.parseInt(marker.getTag().toString()));
-                return false;
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker arg0) {
+                influteBottomSheet(Integer.parseInt(arg0.getTag().toString()));
+
             }
         });
     }
+
+
 
     /**
      * Send the service Id to bottomSheetMapFragment class so BottomSheetMapFragment can Inflate the view as needed
@@ -139,16 +152,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * with title and cater as snippets
      */
     private void pinAllServices() {
-        serviceC = new ServiceController(this);
-        List<Service> services = serviceC.readAllIntoView();
-        mMap.clear();
-        for(Service s : services){
-            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Cate = s.getCategory();
-            String name = s.getName();
-            int tag = s.getID();
             addMarker(servicePin, Cate, name, tag);
-        }
+        dbHandler = new ServiceController(this);
+        List<Service> services = dbHandler.read();
+        pinServices(services);
     }
 
     @Override
@@ -165,9 +172,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param category
      */
     private void pinFilterServices(String category) {
-        serviceC = new ServiceController(this);
-        pinServices(serviceC.readRecordsByCategory(category));
-        List<Service> services = serviceC.read();
+        dbHandler = new ServiceController(this);
+        List<Service> services = dbHandler.readRecordsByCategory(category);
         pinServices(services);
     }
     
@@ -178,8 +184,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param desc
      */
     private void pinSearchedServices(String desc) {
-        serviceC = new ServiceController(this);
-        pinServices(serviceC.readRecordsByDescription(desc));
+        dbHandler = new ServiceController(this);
+        List<Service> services = dbHandler.readRecordsByDescription(desc);
+        pinServices(services);
     }
 
 
@@ -321,8 +328,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (item.getItemId()) {
                 case R.id.action_text_info: {
                     Intent intent = new Intent(MapsActivity.this, CardActivity.class);
-                    startActivityForResult(intent, 1);
-                    break;
+                    startActivity(intent);
+                    return false;
+                }
+
+                case R.id.action_input: {
+                    createInputDialog();
                 }
                 default:
                     return super.onOptionsItemSelected(item);
@@ -330,6 +341,54 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void createInputDialog(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
+        View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(this);
+        alertDialogBuilderUserInput.setView(mView);
+
+        //getting all the view
+        final EditText nameInput = (EditText) mView.findViewById(R.id.input_name);
+        final EditText descInput = (EditText) mView.findViewById(R.id.input_desc);
+        final EditText hoursInput = (EditText) mView.findViewById(R.id.input_hours);
+        final EditText addressInput = (EditText) mView.findViewById(R.id.input_address);
+        final EditText postInput = (EditText) mView.findViewById(R.id.input_postocode);
+        final EditText phoneInput = (EditText) mView.findViewById(R.id.input_phone);
+        final EditText emailInput = (EditText) mView.findViewById(R.id.input_email);
+        final EditText websiteInput = (EditText) mView.findViewById(R.id.input_website);
+
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+                        tempService = new Service(0,
+                                nameInput.getText().toString(),
+                                0,
+                                0,
+                                null,
+                                "",
+                                descInput.getText().toString(),
+                                hoursInput.getText().toString(),
+                                addressInput.getText().toString(),
+                                postInput.getText().toString(),
+                                phoneInput.getText().toString(),
+                                emailInput.getText().toString(),
+                                websiteInput.getText().toString());
+                    }
+                })
+
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
+    }
+
 
     private class JsonHandler extends AsyncTask<Void, Void, Void> {
 
@@ -355,7 +414,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     return null;
                 }
-
                 try {
                     JSONArray serviceJsonArray = new JSONArray(jsonStr);
                     for (int i = 0; i < serviceJsonArray.length(); i++) {

@@ -1,0 +1,89 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="sans-serif-light" >
+
+    <EditText
+        android:id="@+id/input_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:hint="@string/name"
+        />
+
+    <EditText
+        android:id="@+id/input_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="17sp"
+        android:hint="@string/description"
+        />
+
+    <EditText
+        android:id="@+id/input_hours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="17sp"
+        android:hint="@string/hours"
+        android:inputType="datetime"
+        />
+
+    <EditText
+        android:id="@+id/input_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="17sp"
+        android:hint="@string/address"
+        />
+
+    <EditText
+        android:id="@+id/input_postocode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="17sp"
+        android:hint="@string/post_code"
+        />
+
+    <EditText
+        android:id="@+id/input_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="17sp"
+        android:hint="@string/phone"
+        android:inputType="phone"
+        />
+
+    <EditText
+        android:id="@+id/input_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="17sp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        />
+
+
+    <EditText
+        android:id="@+id/input_website"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="17sp"
+        android:hint="@string/website"
+        android:inputType="textUri"
+        />
+
+
+
+</LinearLayout>

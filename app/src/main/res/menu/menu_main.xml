@@ -26,4 +26,10 @@
         android:icon="@drawable/ic_text_fields_white_24dp"
         android:orderInCategory="3"
         app:showAsAction="always" />
+
+    <item android:id="@+id/action_input"
+        android:title="@string/info_text"
+        android:icon="@drawable/ic_library_add_black_24dp"
+        android:orderInCategory="3"
+        app:showAsAction="always" />
 </menu>
