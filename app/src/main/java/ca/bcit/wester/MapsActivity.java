@@ -58,7 +58,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MenuItem filterList = null;
     private ArrayList<String> filterNameList = new ArrayList<String>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,39 +140,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     private void pinAllServices() {
         serviceC = new ServiceController(this);
-        List<Service> services = serviceC.read();
-        pinServices(services);
-    }
-
-    /**
-     * filter the services based on cate
-     * pin the services onto map
-     * @param category
-     */
-    private void pinFilterServices(String category) {
-        serviceC = new ServiceController(this);
-        List<Service> services = serviceC.readRecordsByCategory(category);
-        pinServices(services);
-    }
-
-
-    /**
-     * search the user input in our data base for match result
-     * search based on desc, title, and cate
-     * pin the services onto map
-     * @param desc
-     */
-    private void pinSearchedServices(String desc) {
-        serviceC = new ServiceController(this);
-        List<Service> services = serviceC.readRecordsByDescription(desc);
-        pinServices(services);
-    }
-
-    /**
-     * pin the service passed in as param onto the map fragment
-     * @param services
-     */
-    private void pinServices(List<Service> services){
+        List<Service> services = serviceC.readAllIntoView();
         mMap.clear();
         for(Service s : services){
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
@@ -183,6 +150,39 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             addMarker(servicePin, Cate, name, tag);
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK){
+            pinCurrentList();
+        }
+    }
+
+    /**
+     * filter the services based on cate
+     * pin the services onto map
+     * @param category
+     */
+    private void pinFilterServices(String category) {
+        serviceC = new ServiceController(this);
+        pinServices(serviceC.readRecordsByCategory(category));
+        List<Service> services = serviceC.read();
+        pinServices(services);
+    }
+    
+    /**
+     * search the user input in our data base for match result
+     * search based on desc, title, and cate
+     * pin the services onto map
+     * @param desc
+     */
+    private void pinSearchedServices(String desc) {
+        serviceC = new ServiceController(this);
+        pinServices(serviceC.readRecordsByDescription(desc));
+    }
+
+
 
     /**
      * makes marker to put onto the map
@@ -311,7 +311,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 //      if the id was a 0 or negative number, then the item selected has come from the filter list.
         if (item.getItemId() < 0) {
-            pinFilterServices(filterNameList.get(abs(item.getItemId())));
+            pinFilterServices(filterNameList.get(abs(item.getItemId()) - 1));
             return super.onOptionsItemSelected(item);
         } else if (item.getItemId() == 0) {
             pinAllServices();
@@ -321,12 +321,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (item.getItemId()) {
                 case R.id.action_text_info: {
                     Intent intent = new Intent(MapsActivity.this, CardActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
+                    break;
                 }
                 default:
                     return super.onOptionsItemSelected(item);
             }
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private class JsonHandler extends AsyncTask<Void, Void, Void> {
@@ -427,9 +429,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //Add Menu Items
         filterList.getSubMenu().add(0, 0, 0, "All");
-        for (int i = 1; i < filterNameList.size(); i++) {
+        for (int i = 1; i <= filterNameList.size(); i++) {
             //give unique id of each item the inverse to prevent conflicts with other items when implementing onclick
             filterList.getSubMenu().add(0, (i*-1), i, filterNameList.get(i - 1));
+        }
+    }
+
+    /*Pins services currently in the servicelist*/
+    public void pinCurrentList() {
+        pinServices(ServiceController.getServiceList());
+    }
+
+    /**
+     * pin the service passed in as param onto the map fragment
+     * @param services
+     */
+    private void pinServices(List<Service> services) {
+        mMap.clear();
+        for(Service s : services){
+            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
+            String Cate = s.getCategory();
+            String name = s.getName();
+            int tag = s.getID();
+            addMarker(servicePin, Cate, name, tag);
         }
     }
 }
