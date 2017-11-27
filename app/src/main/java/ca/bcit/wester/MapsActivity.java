@@ -67,8 +67,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Add actionbar to activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        dbHandler = new ServiceController(this);
-//        new MapsActivity.JsonHandler().execute();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -109,16 +107,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * Set up the listener for markers
      */
     private void setUpListener(){
-//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//
-//                //inflate the bottom sheet with information needed
-//                influteBottomSheet(Integer.parseInt(marker.getTag().toString()));
-//                return false;
-//            }
-//        });
-
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
             @Override
@@ -128,8 +116,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
-
 
     /**
      * Send the service Id to bottomSheetMapFragment class so BottomSheetMapFragment can Inflate the view as needed
@@ -147,6 +133,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //display the bottom sheet
         b.show(getSupportFragmentManager(), b.getTag());
     }
+
     /**
      * Pin all the services onto the google map
      * with title and cater as snippets
@@ -157,6 +144,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         pinServices(services);
     }
 
+    /**
+     * Refreshes the pins on the map
+     * @param requestCode code sent to the imtent
+     * @param resultCode the recevied code from the itent
+     * @param data the data from the intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -280,6 +273,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Create the menu options for the app bar
+     * @param menu the layout menu
+     * @return if the query text for search has changed
+     */
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu. This adds items to the app bar.
@@ -315,6 +313,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * When an option of the menu bar is selected
+     * @param item the selected option
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -343,6 +346,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Creates an input dialog for the user to input data
+     */
     private void createInputDialog(){
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
         View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
@@ -391,6 +397,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * The class that takes charge of pulling and creating the database
+     */
     private class JsonHandler extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -473,7 +482,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    //Populates FilterList
+    /**
+     * Populates the filtered services
+     */
     public void populateFilter() {
         Set<String> sortedNames = new TreeSet<String>();
         ServiceController controller = new ServiceController(this);

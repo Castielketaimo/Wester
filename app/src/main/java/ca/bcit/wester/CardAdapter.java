@@ -106,6 +106,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         return services.size();
     }
 
+    /**
+     * Sets the image to a resource depending on which title
+     * @param caterTitle the title of the category
+     * @param caterImg the imageview that changes
+     */
     private void makeImage(String caterTitle, ImageView caterImg){
 
         switch(caterTitle) {

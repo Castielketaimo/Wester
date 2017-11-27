@@ -73,8 +73,7 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        
         mRecyclerView = (RecyclerView) findViewById(R.id.card_view);
 
         // use this setting to improve performance if you know that changes
