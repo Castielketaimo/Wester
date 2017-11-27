@@ -76,7 +76,7 @@ public class BottomSheetMapFragment extends BottomSheetDialogFragment {
                 caterImg.setImageResource(R.drawable.education);
                 break;
 
-            case "Emergency,Transitional and Supported Housing" :
+            case "Emergency, Transitional and Supported Housing" :
                 caterImg.setImageResource(R.drawable.emergency);
                 break;
 
@@ -108,12 +108,16 @@ public class BottomSheetMapFragment extends BottomSheetDialogFragment {
                 caterImg.setImageResource(R.drawable.nonmarket);
                 break;
 
-            case "Parks, Recreation and Community School" :
+            case "Parks, Recreation and Community School Programming" :
                 caterImg.setImageResource(R.drawable.parkrecreating);
                 break;
 
             case "Seniors Services" :
                 caterImg.setImageResource(R.drawable.seniorsservics);
+                break;
+
+            case "Child Care, Child Development and Early Learning Programs" :
+                caterImg.setImageResource(R.drawable.childcare);
                 break;
 
             default :

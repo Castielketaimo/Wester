@@ -16,4 +16,13 @@
     <string name="service_name">Service_Name</string>
     <string name="sheetp1">sheetp1</string>
     <string name="log_latin">log_latin</string>
+    <string name="website">Website</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="post_code">Post Code</string>
+    <string name="address">Address</string>
+    <string name="hours">Hours</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="name">Name</string>
 </resources>
