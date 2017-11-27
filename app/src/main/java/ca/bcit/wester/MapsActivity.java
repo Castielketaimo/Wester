@@ -4,10 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.TreeSet;
 import ca.bcit.wester.controllers.ServiceController;
 import ca.bcit.wester.models.Service;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -52,7 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_maps);
         //Add actionbar to activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,13 +85,53 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
+        // Add a marker in new west and move the camera
         LatLng newWest = new LatLng(49.206654, -122.910429);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 15));
         mMap.clear();
+
+        //pin all the services needed
         pinAllServices();
+
+        //set up the listeners for markers
+        setUpListener();
     }
 
+    /**
+     * Set up the listener for markers
+     */
+    private void setUpListener(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                //inflate the bottom sheet with information needed
+                influteBottomSheet(Integer.parseInt(marker.getTag().toString()));
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Send the service Id to bottomSheetMapFragment class so BottomSheetMapFragment can Inflate the view as needed
+     * @param serviceId
+     */
+    private void influteBottomSheet(int serviceId){
+        //create ne bottom sheet fragment
+        BottomSheetDialogFragment b = new BottomSheetMapFragment();
+
+        //sent the service to new fragment
+        Bundle args = new Bundle();
+        args.putInt("serviceId" , serviceId);
+        b.setArguments(args);
+
+        //display the bottom sheet
+        b.show(getSupportFragmentManager(), b.getTag());
+    }
+    /**
+     * Pin all the services onto the google map
+     * with title and cater as snippets
+     */
     private void pinAllServices() {
         serviceC = new ServiceController(this);
         List<Service> services = serviceC.read();
@@ -97,7 +140,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
             String Desc = s.getDescription();
             String name = s.getName();
-            addMarker(servicePin, Desc, name);
+            int tag = s.getID();
+            addMarker(servicePin, Cate, name, tag);
         }
     }
 
@@ -127,28 +171,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void addMarker(LatLng location, String Cate, String name){
-        mMap.addMarker(new MarkerOptions()
+    /**
+     * makes marker to put onto the map
+     * @param location
+     * @param cate
+     * @param name
+     */
+    private void addMarker(LatLng location, String cate, String name, int tag) {
+        Marker marker = mMap.addMarker(new MarkerOptions()
                 .title(name)
-                .snippet(Cate)
+                .snippet(cate)
                 .position(location));
+        //give each marker a unique tag
+        marker.setTag(tag);
     }
-
-
-    public void onClickDone(View v) {
-        CharSequence text = "Button was clicked.";
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator), text, Snackbar.LENGTH_LONG);
-        snackbar.setAction("H" +
-                "ide", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast t = Toast.makeText(MapsActivity.this, "Done", Toast.LENGTH_LONG);
-                t.show();
-            }
-        });
-        snackbar.show();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
