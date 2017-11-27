@@ -21,9 +21,9 @@
         app:showAsAction="always" />
 
 
-    <item android:id="@+id/action_request_info"
+    <item android:id="@+id/action_text_info"
         android:title="@string/info_text"
-        android:icon="@drawable/ic_menu_white_24dp"
+        android:icon="@drawable/ic_text_fields_white_24dp"
         android:orderInCategory="3"
         app:showAsAction="always" />
 </menu>

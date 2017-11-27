@@ -11,6 +11,8 @@
     <string name="info_filter">Filter Request</string>
     <string name="info_text">Text Request</string>
     <string name="info_search">Search</string>
+    <string name="app_label">Search</string>
+    <string name="search_hint">Search...</string>
     <string name="service_name">Service_Name</string>
     <string name="sheetp1">sheetp1</string>
     <string name="log_latin">log_latin</string>
