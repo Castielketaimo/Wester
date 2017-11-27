@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +73,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper((v.getContext()), R.style.CustomAlertDialog)).create();
+                AlertDialog.Builder alertAdd = new AlertDialog.Builder(new ContextThemeWrapper((v.getContext()), R.style.CustomAlertDialog));
+//                LayoutInflater inflater = (LayoutInflater)v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                ImageView image = new ImageView(v.getContext());
+                makeImage(services.get(servicePosition).getCategory(), image);
+                alertAdd.setView(image);
+                AlertDialog alertDialog = alertAdd.create();
                 alertDialog.setTitle(services.get(servicePosition).getName());
                 alertDialog.setMessage(
                         services.get(servicePosition).getDescription() + "\n\n" +
@@ -98,5 +104,69 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return services.size();
+    }
+
+    private void makeImage(String caterTitle, ImageView caterImg){
+
+        switch(caterTitle) {
+            case "Drop-In Centre" :
+                caterImg.setImageResource(R.drawable.dropin);
+                break;
+
+            case "Education, Language and Literacy" :
+                caterImg.setImageResource(R.drawable.education);
+                break;
+
+            case "Emergency,Transitional and Supported Housing" :
+                caterImg.setImageResource(R.drawable.emergency);
+                break;
+
+            case "Employment and Job Training" :
+                caterImg.setImageResource(R.drawable.employment);
+                break;
+
+            case "Family and General Support Programs" :
+                caterImg.setImageResource(R.drawable.family);
+                break;
+
+            case "Food Programs and Services" :
+                caterImg.setImageResource(R.drawable.foodprogram);
+                break;
+
+            case "Government and Justice Services" :
+                caterImg.setImageResource(R.drawable.governmentndustice);
+                break;
+
+            case "Health, Mental Health & Addictions Services" :
+                caterImg.setImageResource(R.drawable.healthmental);
+                break;
+
+            case "Housing Outreach, Advocacy and Referral" :
+                caterImg.setImageResource(R.drawable.housingoutreach);
+                break;
+
+            case "Non-Market and Co-op Housing" :
+                caterImg.setImageResource(R.drawable.nonmarket);
+                break;
+
+            case "Parks, Recreation and Community School" :
+                caterImg.setImageResource(R.drawable.parkrecreating);
+                break;
+
+            case "Seniors Services" :
+                caterImg.setImageResource(R.drawable.seniorsservics);
+                break;
+
+            case "Child Care, Child Development and Early Learning Programs" :
+                caterImg.setImageResource(R.drawable.childcare);
+                break;
+
+            case "Settlement Service" :
+                caterImg.setImageResource(R.drawable.settement);
+                break;
+
+            default :
+                caterImg.setImageResource(R.drawable.newwestminster);
+        }
     }
 }
