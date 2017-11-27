@@ -51,8 +51,8 @@ public class ServiceController extends DatabaseHandler
         values.put("Hours", service.getHours());
         values.put("Address", service.getAddress());
         values.put("Postal", service.getPostalCode());
-        values.put("Phone", service.getPostalCode());
-        values.put("Email", service.getPostalCode());
+        values.put("Phone", service.getPhone());
+        values.put("Email", service.getEmail());
         values.put("Website", service.getPostalCode());
         values.put("Category", service.getCategory());
         values.put("Description", service.getDescription());
@@ -133,7 +133,7 @@ public class ServiceController extends DatabaseHandler
 
         // Grab service from DB with specific service id.
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE _serviceID = " + serviceID;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
 
         // If service exists.
