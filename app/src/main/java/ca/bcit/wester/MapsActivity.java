@@ -51,7 +51,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MenuItem filterList = null;
     private ArrayList<String> filterNameList = new ArrayList<String>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +133,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     private void pinAllServices() {
         serviceC = new ServiceController(this);
-        List<Service> services = serviceC.read();
+        List<Service> services = serviceC.readAllIntoView();
         mMap.clear();
         for(Service s : services){
             LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
@@ -145,32 +144,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-//    filter pins
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK){
+            pinCurrentList();
+        }
+    }
+
+    //    filter pins
     private void pinFilterServices(String category) {
         serviceC = new ServiceController(this);
-        List<Service> services = serviceC.readRecordsByCategory(category);
-        mMap.clear();
-        for(Service s : services){
-            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Desc = s.getDescription();
-            String name = s.getName();
-            int tag = s.getID();
-            addMarker(servicePin, Desc, name, tag);
-        }
+        pinServices(serviceC.readRecordsByCategory(category));
     }
 
     //    filter pins
     private void pinSearchedServices(String desc) {
         serviceC = new ServiceController(this);
-        List<Service> services = serviceC.readRecordsByDescription(desc);
-        mMap.clear();
-        for(Service s : services){
-            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
-            String Desc = s.getDescription();
-            String name = s.getName();
-            int tag = s.getID();
-            addMarker(servicePin, Desc, name, tag);
-        }
+        pinServices(serviceC.readRecordsByDescription(desc));
     }
 
     /**
@@ -228,7 +219,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 //      if the id was a 0 or negative number, then the item selected has come from the filter list.
         if (item.getItemId() < 0) {
-            pinFilterServices(filterNameList.get(abs(item.getItemId())));
+            pinFilterServices(filterNameList.get(abs(item.getItemId()) - 1));
             return super.onOptionsItemSelected(item);
         } else if (item.getItemId() == 0) {
             pinAllServices();
@@ -238,12 +229,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (item.getItemId()) {
                 case R.id.action_text_info: {
                     Intent intent = new Intent(MapsActivity.this, CardActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
+                    break;
                 }
                 default:
                     return super.onOptionsItemSelected(item);
             }
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private class JsonHandler extends AsyncTask<Void, Void, Void> {
@@ -344,9 +337,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //Add Menu Items
         filterList.getSubMenu().add(0, 0, 0, "All");
-        for (int i = 1; i < filterNameList.size(); i++) {
+        for (int i = 1; i <= filterNameList.size(); i++) {
             //give unique id of each item the inverse to prevent conflicts with other items when implementing onclick
             filterList.getSubMenu().add(0, (i*-1), i, filterNameList.get(i - 1));
         }
     }
+
+    /*Pins services currently in the servicelist*/
+    public void pinCurrentList() {
+        pinServices(ServiceController.getServiceList());
+    }
+
+    /*Helper method for pinning list with descriptions*/
+    private void pinServices(List<Service> services) {
+        mMap.clear();
+        for(Service s : services){
+            LatLng servicePin = new LatLng(s.getLatitude(), s.getLongitude());
+            String Desc = s.getDescription();
+            String name = s.getName();
+            int tag = s.getID();
+            addMarker(servicePin, Desc, name, tag);
+        }
+    }
+
 }

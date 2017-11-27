@@ -16,4 +16,5 @@
     <string name="service_name">Service_Name</string>
     <string name="sheetp1">sheetp1</string>
     <string name="log_latin">log_latin</string>
+    <string name="action_return">Return</string>
 </resources>
