@@ -152,7 +152,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * with title and cater as snippets
      */
     private void pinAllServices() {
-            addMarker(servicePin, Cate, name, tag);
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.read();
         pinServices(services);
@@ -273,6 +272,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case "Child Care, Child Development and Early Learning Programs":
                 return R.drawable.ic_child_marker;
 
+            case "Settlement Services":
+                return R.drawable.ic_settle_marker;
+
             default :
                 return R.drawable.ic_done_white_24dp;
         }
@@ -339,7 +341,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     return super.onOptionsItemSelected(item);
             }
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void createInputDialog(){
