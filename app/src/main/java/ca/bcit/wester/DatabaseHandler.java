@@ -98,6 +98,24 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
     /**
+     * Checks if the service table is empty
+     * @return true if it is
+     */
+    public boolean checkTableIsEmpty() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String count = "SELECT count(*) FROM Service";
+        Cursor c = db.rawQuery(count, null);
+        c.moveToFirst();
+        int icount = c.getInt(0);
+        c.close();
+        if(icount>0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Clears the database of all tables.
      *
      * @param db - SQLite db connection
