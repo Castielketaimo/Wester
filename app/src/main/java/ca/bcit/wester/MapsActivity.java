@@ -1,6 +1,7 @@
 package ca.bcit.wester;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -197,9 +198,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
         // Take appropriate action for each action item click
             switch (item.getItemId()) {
-                case R.id.info_filter:
-                    // search by filter
-                    return true;
+                case R.id.action_text_info: {
+                    Intent intent = new Intent(MapsActivity.this, CardActivity.class);
+                    startActivity(intent);
+                }
                 default:
                     return super.onOptionsItemSelected(item);
             }
