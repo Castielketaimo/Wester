@@ -67,8 +67,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Add actionbar to activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        dbHandler = new ServiceController(this);
-//        new MapsActivity.JsonHandler().execute();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -77,6 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //populate list
         dbHandler = new ServiceController(this);
         if(dbHandler.checkTableIsEmpty()) {
+            dbHandler.readAllIntoView();
             new MapsActivity.JsonHandler().execute();
         }
     }
@@ -98,8 +97,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 15));
         mMap.clear();
 
-        //pin all the services needed
-        pinAllServices();
+        if(ServiceController.isInitialLoad()) {
+            dbHandler.stopInitialLoad();
+            pinAllServices();
+        } else {
+            //pin all the services needed
+            pinCurrentList();
+        }
 
         //set up the listeners for markers
         setUpListener();
@@ -109,16 +113,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * Set up the listener for markers
      */
     private void setUpListener(){
-//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//
-//                //inflate the bottom sheet with information needed
-//                influteBottomSheet(Integer.parseInt(marker.getTag().toString()));
-//                return false;
-//            }
-//        });
-
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
             @Override
@@ -128,8 +122,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
-
 
     /**
      * Send the service Id to bottomSheetMapFragment class so BottomSheetMapFragment can Inflate the view as needed
@@ -147,16 +139,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //display the bottom sheet
         b.show(getSupportFragmentManager(), b.getTag());
     }
+
     /**
      * Pin all the services onto the google map
      * with title and cater as snippets
      */
     private void pinAllServices() {
+        mMap.clear();
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.readAllIntoView();
         pinServices(services);
     }
 
+    /**
+     * Re-pins all items that were shown on the text view.
+     *
+     * @param requestCode requestCode that was received
+     * @param resultCode resultCode that was received
+     * @param data data that was received
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -168,9 +169,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     /**
      * filter the services based on cate
      * pin the services onto map
-     * @param category
+     * @param category to search for
      */
     private void pinFilterServices(String category) {
+        mMap.clear();
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.readRecordsByCategory(category);
         pinServices(services);
@@ -183,8 +185,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param desc
      */
     private void pinSearchedServices(String desc) {
+        mMap.clear();
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.readRecordsByDescription(desc);
+        Toast.makeText(MapsActivity.this, services.size() + " services found.", Toast.LENGTH_LONG).show();
         pinServices(services);
     }
 
@@ -280,6 +284,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Create the menu options for the app bar
+     * @param menu the layout menu
+     * @return if the query text for search has changed
+     */
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu. This adds items to the app bar.
@@ -295,7 +304,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Clear entry on submit
-                Toast.makeText(MapsActivity.this, "Searching for " + query, Toast.LENGTH_LONG).show();
                 pinSearchedServices(query);
                 searchView.setIconified(true);
                 searchView.clearFocus();
@@ -315,6 +323,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * When an option of the menu bar is selected
+     * @param item the selected option
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -330,10 +343,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (item.getItemId()) {
                 case R.id.action_text_info: {
                     Intent intent = new Intent(MapsActivity.this, CardActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                     return false;
                 }
-
                 case R.id.action_input: {
                     createInputDialog();
                 }
@@ -343,6 +355,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Creates an input dialog for the user to input data
+     */
     private void createInputDialog(){
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
         View mView = layoutInflaterAndroid.inflate(R.layout.user_input_dialog_box, null);
@@ -391,6 +406,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * The class that takes charge of pulling and creating the database
+     */
     private class JsonHandler extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -469,11 +487,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.clear();
             pinAllServices();
             populateFilter();
-            Toast.makeText(MapsActivity.this, "The size of the db is " + dbHandler.read().size(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    //Populates FilterList
+    /**
+     * Populates the filtered services
+     */
     public void populateFilter() {
         Set<String> sortedNames = new TreeSet<String>();
         ServiceController controller = new ServiceController(this);
@@ -496,6 +515,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     /*Pins services currently in the servicelist*/
     public void pinCurrentList() {
+        mMap.clear();
         pinServices(ServiceController.getServiceList());
     }
 

@@ -47,10 +47,10 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Clear entry on submit
-                Toast.makeText(CardActivity.this, "Searching for " + query, Toast.LENGTH_LONG).show();
                 searchView.setIconified(true);
                 searchView.clearFocus();
                 serviceController.readRecordsByDescription(query);
+                Toast.makeText(CardActivity.this, ServiceController.getServiceList().size() + " services found.", Toast.LENGTH_LONG).show();
                 recreate();
                 // collapse the action view after submit
                 searchView.setIconified(true);
@@ -73,8 +73,7 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        
         mRecyclerView = (RecyclerView) findViewById(R.id.card_view);
 
         // use this setting to improve performance if you know that changes

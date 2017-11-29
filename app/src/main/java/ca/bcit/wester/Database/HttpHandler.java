@@ -19,6 +19,11 @@ import java.net.URL;
 public class HttpHandler {
     private static final String TAG = HttpHandler.class.getSimpleName();
 
+    /**
+     * Makes a call to the url
+     * @param reqUrl the url being requested
+     * @return the response from the url
+     */
     public String makeServiceCall(String reqUrl) {
         String response = null;
         try {
@@ -40,6 +45,11 @@ public class HttpHandler {
         return response;
     }
 
+    /**
+     * Converts the stream into a string
+     * @param is the inputstream
+     * @return the string from the stream
+     */
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();

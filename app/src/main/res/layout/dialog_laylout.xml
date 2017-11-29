@@ -9,6 +9,13 @@
     android:padding="10sp"
     android:background="@color/card_background"
     >
+    <Button
+        android:id="@+id/dialog_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_return"
+        android:layout_gravity="right"
+        />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,14 +106,6 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
                 android:textSize="17sp"
-                />
-
-            <Button
-                android:id="@+id/dialog_return"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dialog_return"
-                android:background="@drawable/rounded_corner"
                 />
         </LinearLayout>
     </ScrollView>

@@ -27,6 +27,8 @@ public class ServiceController extends DatabaseHandler
 
     /** List of services.**/
     private static ArrayList<Service> serviceList = new ArrayList<Service>();
+    /** Boolean for telling initial load.**/
+    private static boolean initialLoad = true;
 
     /**
      * Inherit/use DatabaseHandler constructor.
@@ -414,5 +416,17 @@ public class ServiceController extends DatabaseHandler
 
         // Return list of services.
         return serviceList;
+    }
+
+    /**
+     * Checks to see if serviceList has been made yet.
+     * @return boolean for if serviceList was loaded before.
+     */
+    public static boolean isInitialLoad() {
+        return initialLoad;
+    }
+
+    public static void stopInitialLoad() {
+        initialLoad = false;
     }
 }
