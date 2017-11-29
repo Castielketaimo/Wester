@@ -140,15 +140,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     private void pinAllServices() {
         dbHandler = new ServiceController(this);
-        List<Service> services = dbHandler.read();
+        List<Service> services = dbHandler.readAllIntoView();
         pinServices(services);
     }
 
     /**
-     * Refreshes the pins on the map
-     * @param requestCode code sent to the imtent
-     * @param resultCode the recevied code from the itent
-     * @param data the data from the intent
+     * Re-pins all items that were shown on the text view.
+     *
+     * @param requestCode requestCode that was received
+     * @param resultCode resultCode that was received
+     * @param data data that was received
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -161,7 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     /**
      * filter the services based on cate
      * pin the services onto map
-     * @param category
+     * @param category to search for
      */
     private void pinFilterServices(String category) {
         dbHandler = new ServiceController(this);
@@ -333,10 +334,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (item.getItemId()) {
                 case R.id.action_text_info: {
                     Intent intent = new Intent(MapsActivity.this, CardActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                     return false;
                 }
-
                 case R.id.action_input: {
                     createInputDialog();
                 }
