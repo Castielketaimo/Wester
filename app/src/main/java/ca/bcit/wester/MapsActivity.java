@@ -145,6 +145,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * with title and cater as snippets
      */
     private void pinAllServices() {
+        mMap.clear();
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.readAllIntoView();
         pinServices(services);
@@ -161,6 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK){
+            pinCurrentList();
         }
     }
 
@@ -170,6 +172,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param category to search for
      */
     private void pinFilterServices(String category) {
+        mMap.clear();
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.readRecordsByCategory(category);
         pinServices(services);
@@ -182,8 +185,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param desc
      */
     private void pinSearchedServices(String desc) {
+        mMap.clear();
         dbHandler = new ServiceController(this);
         List<Service> services = dbHandler.readRecordsByDescription(desc);
+        Toast.makeText(MapsActivity.this, services.size() + " services found.", Toast.LENGTH_LONG).show();
         pinServices(services);
     }
 
@@ -299,7 +304,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Clear entry on submit
-                Toast.makeText(MapsActivity.this, "Searching for " + query, Toast.LENGTH_LONG).show();
                 pinSearchedServices(query);
                 searchView.setIconified(true);
                 searchView.clearFocus();
@@ -511,6 +515,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     /*Pins services currently in the servicelist*/
     public void pinCurrentList() {
+        mMap.clear();
         pinServices(ServiceController.getServiceList());
     }
 

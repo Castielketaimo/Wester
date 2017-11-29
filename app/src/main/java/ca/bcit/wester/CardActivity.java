@@ -47,10 +47,10 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Clear entry on submit
-                Toast.makeText(CardActivity.this, "Searching for " + query, Toast.LENGTH_LONG).show();
                 searchView.setIconified(true);
                 searchView.clearFocus();
                 serviceController.readRecordsByDescription(query);
+                Toast.makeText(CardActivity.this, ServiceController.getServiceList().size() + " services found.", Toast.LENGTH_LONG).show();
                 recreate();
                 // collapse the action view after submit
                 searchView.setIconified(true);
