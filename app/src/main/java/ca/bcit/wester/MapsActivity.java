@@ -75,6 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //populate list
         dbHandler = new ServiceController(this);
         if(dbHandler.checkTableIsEmpty()) {
+            dbHandler.readAllIntoView();
             new MapsActivity.JsonHandler().execute();
         }
     }
@@ -96,8 +97,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newWest, 15));
         mMap.clear();
 
-        //pin all the services needed
-        pinAllServices();
+        if(ServiceController.isInitialLoad()) {
+            dbHandler.stopInitialLoad();
+            pinAllServices();
+        } else {
+            //pin all the services needed
+            pinCurrentList();
+        }
 
         //set up the listeners for markers
         setUpListener();
@@ -155,7 +161,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK){
-            pinCurrentList();
         }
     }
 
