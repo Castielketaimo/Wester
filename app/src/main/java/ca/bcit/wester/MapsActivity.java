@@ -478,7 +478,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.clear();
             pinAllServices();
             populateFilter();
-            Toast.makeText(MapsActivity.this, "The size of the db is " + dbHandler.read().size(), Toast.LENGTH_SHORT).show();
         }
     }
 
