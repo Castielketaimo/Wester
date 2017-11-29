@@ -1,4 +1,4 @@
-package ca.bcit.wester;
+package ca.bcit.wester.Database;
 
 import android.util.Log;
 

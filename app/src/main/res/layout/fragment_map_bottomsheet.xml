@@ -5,24 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fontFamily="sans-serif-light" >
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:id="@+id/cater"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:textSize="20sp"
-        />
+    android:fontFamily="sans-serif-light"
+    android:background="#E8FFFA">
 
     <ImageView
         android:id="@+id/CaterImage"
@@ -30,7 +14,34 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         app:srcCompat="@android:drawable/btn_star"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="5dp" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        />
+
+    <TextView
+        android:id="@+id/cater"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        />
+
+
 
     <TextView
         android:id="@+id/desc"
@@ -38,6 +49,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         />
 
     <TextView
@@ -46,6 +61,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         />
 
     <TextView
@@ -54,6 +73,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         />
 
     <TextView
@@ -62,6 +85,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         />
 
     <TextView
@@ -70,6 +97,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         />
 
     <TextView
@@ -78,6 +109,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         />
 
 
@@ -87,6 +122,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="5dp"
         android:textSize="17sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         />
 
 

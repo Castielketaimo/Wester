@@ -1,6 +1,5 @@
 package ca.bcit.wester;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ca.bcit.wester.Adapters.CardAdapter;
 import ca.bcit.wester.controllers.ServiceController;
 import ca.bcit.wester.models.Service;
 

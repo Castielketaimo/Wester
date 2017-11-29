@@ -13,9 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        card_view:cardCornerRadius="4dp"
-        android:background="@drawable/box_container"
-        android:layout_margin="10sp"
+        card_view:cardCornerRadius="6dp"
+        card_view:contentPadding="5dp"
+        card_view:cardBackgroundColor="@color/card_background"
+        android:paddingBottom="5dp"
+        android:layout_margin="7sp"
         >
         <LinearLayout
             android:orientation="vertical"
@@ -27,7 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text=""
                 />
             <TextView
                 android:id="@+id/info_text"

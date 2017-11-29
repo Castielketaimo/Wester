@@ -1,4 +1,4 @@
-package ca.bcit.wester;
+package ca.bcit.wester.Fragnment;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.net.URL;
 
+import ca.bcit.wester.R;
 import ca.bcit.wester.controllers.ServiceController;
 import ca.bcit.wester.models.Service;
 

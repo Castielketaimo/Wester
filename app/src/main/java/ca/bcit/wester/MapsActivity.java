@@ -33,14 +33,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ca.bcit.wester.Database.HttpHandler;
+import ca.bcit.wester.Fragnment.BottomSheetMapFragment;
 import ca.bcit.wester.controllers.ServiceController;
 import ca.bcit.wester.models.Service;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;

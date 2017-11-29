@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.bcit.wester.DatabaseHandler;
+import ca.bcit.wester.Database.DatabaseHandler;
 import ca.bcit.wester.models.Service;
 
 /**
